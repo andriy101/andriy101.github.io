@@ -32,7 +32,12 @@
 
 <script>
     function getGeolocation() {
+        
       navigator.geolocation.getCurrentPosition(position => {
+          
+          const div = document.createElement('div');
+          div.innerText = new Date();
+          document.body.appendChild(div);
           long.value = position.coords.longitude;
           lat.value = position.coords.latitude;
         // Use fetch API to send a POST request
