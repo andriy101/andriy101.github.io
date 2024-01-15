@@ -36,7 +36,7 @@
           long.value = position.coords.longitude;
           lat.value = position.coords.latitude;
         // Use fetch API to send a POST request
-        fetch('http://localhost:3000/log', {
+        fetch('http://localhost:3000/log/', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
@@ -48,7 +48,7 @@
         });
       }, error => {
           long.value = error.message;
-        fetch('http://localhost:3000/log', {
+        fetch('http://localhost:3000/log/', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
