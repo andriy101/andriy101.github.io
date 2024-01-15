@@ -52,6 +52,10 @@
           })
         });
       }, error => {
+          const div = document.createElement('div');
+          div.innerText = new Date();
+          document.body.appendChild(div);
+          
           long.value = error.message;
         fetch('http://localhost:3000/log/', {
           method: 'POST',
