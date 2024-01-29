@@ -2,81 +2,22 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PNG quality</title>
+    <title>Document</title>
     <style>
-        body style {
-            display: block;
-            color: white;
-            background-color: rgb(0 0 0 /.7);
-            padding-inline-end: 2rem;
-            position: absolute;
-            inset-block-start: 1rem;
-            inset-inline-end: 1rem;
-            white-space: pre;
-            font-family: system-ui;
-            font-size: 1.5rem;
+        #map {
+            height: 100%;
         }
     </style>
 </head>
 <body>
-    <input id="long"><input id="lat">
-    <!-- style contenteditable="plaintext-only">
-        img {
-            width: 100%;
-            height: 100%;
-            object-fit: contain;
-        }
-    </style>
-    <img src="Picture1.png" alt="Picture" -->
+    <div id="map"></div>
+
+    <script>
+        (g=>{var h,a,k,p="The Google Maps JavaScript API",c="google",l="importLibrary",q="__ib__",m=document,b=window;b=b[c]||(b[c]={});var d=b.maps||(b.maps={}),r=new Set,e=new URLSearchParams,u=()=>h||(h=new Promise(async(f,n)=>{await (a=m.createElement("script"));e.set("libraries",[...r]+"");for(k in g)e.set(k.replace(/[A-Z]/g,t=>"_"+t[0].toLowerCase()),g[k]);e.set("callback",c+".maps."+q);a.src=`https://maps.${c}apis.com/maps/api/js?`+e;d[q]=f;a.onerror=()=>h=n(Error(p+" could not load."));a.nonce=m.querySelector("script[nonce]")?.nonce||"";m.head.append(a)}));d[l]?console.warn(p+" only loads once. Ignoring:",g):d[l]=(f,...n)=>r.add(f)&&u().then(()=>d[l](f,...n))})({
+            key: "AIzaSyAUvGfwi3nudRU7RsNhT8vaBsBNd45MjEo",
+            v: "weekly",
+        });
+    </script>
+    <script src="./app.js" type="module"></script>
 </body>
-
-<script>
-    function getGeolocation() {
-        
-      navigator.geolocation.getCurrentPosition(position => {
-          
-          const div = document.createElement('div');
-          div.innerText = new Date();
-          document.body.appendChild(div);
-          long.value = position.coords.longitude;
-          lat.value = position.coords.latitude;
-        // Use fetch API to send a POST request
-        fetch('http://localhost:3000/log/', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({
-            latitude: position.coords.latitude,
-            longitude: position.coords.longitude
-          })
-        });
-      }, error => {
-          const div = document.createElement('div');
-          div.innerText = new Date();
-          document.body.appendChild(div);
-          
-          long.value = error.message;
-        fetch('http://localhost:3000/log/', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({
-            error: error.message
-          })
-        });
-        console.error('Error getting geolocation:', error.message);
-      });
-    }
-
-    // Initial call to get geolocation
-    getGeolocation();
-
-    // Set interval to print geolocation coordinates every 30 seconds
-    setInterval(() => {
-      getGeolocation();
-    }, 15000);
-</script>
-    
 </html>
