@@ -2,9 +2,10 @@ import { MarkerClusterer } from 'https://cdn.skypack.dev/@googlemaps/markerclust
 import jsonAll from './all.js';
 
 async function initMap(data) {
-  console.log('+++++ DATA', data.at(0));
+  console.log('[PERFFF] init map', Date.now() - PERFFF);
   // Request needed libraries.
   const { Map } = await google.maps.importLibrary('maps');
+  console.log('[PERFFF] LOAD map', Date.now() - PERFFF);
 
   const bounds = new google.maps.LatLngBounds();
   const map = new google.maps.Map(document.getElementById('map'));
@@ -13,18 +14,20 @@ async function initMap(data) {
   const markers = data.map(position => {
     const marker = new google.maps.Marker({
         position,
-        icon: {
-          path: google.maps.SymbolPath.CIRCLE,
-          fillColor: 'red',
-          fillOpacity: 1,
-          scale: 10,
-          strokeWeight: 0
-        }
+        icon: 'flower.svg',
+        // icon: {
+        //   path: google.maps.SymbolPath.CIRCLE,
+        //   fillColor: 'red',
+        //   fillOpacity: 1,
+        //   scale: 10,
+        //   strokeWeight: 0
+        // }
     });
     bounds.extend(marker.position);
 
     return marker;
   });
+  console.log('[PERFFF] LOOP', Date.now() - PERFFF);
 
   map.fitBounds(bounds);
   // Add a marker clusterer to manage the markers.
@@ -37,11 +40,10 @@ const capitals = Object.values(jsonAll.Results).flatMap(data => data.Capital ? {
     lng: data.Capital.GeoPt.at(1)
 } : []);
 
-console.log('+++ CAPS', capitals.at(0));
-
 const getMarkers = (code, totalMarkers) => fetch(`/coordinates/${code}.json`)
   .then(res => {
     if (res.ok) {
+      console.log('[PERFFF] GET ALL', code ,Date.now() - PERFFF);
       return res.json();
     }
     console.error(`[APP] Failed to fetch markers for ${code}`);
@@ -52,6 +54,7 @@ const getMarkers = (code, totalMarkers) => fetch(`/coordinates/${code}.json`)
 fetch('https://b.primefactorgames.com/steps/get-all')
   .then(res => {
     if (res.ok) {
+      console.log('[PERFFF] GET ALL', Date.now() - PERFFF);
       return res.json();
     }
     console.error('[APP] Failed to fetch GET ALL');
