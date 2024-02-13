@@ -11,9 +11,9 @@ async function initMap(data) {
   const map = new google.maps.Map(document.getElementById('map'));
 
   // Add some markers to the map.
-  const markers = data.map(position => {
+  const markers = data.map(([lat, lng]) => {
     const marker = new google.maps.Marker({
-        position,
+        position: { lat, lng },
         icon: 'flower.svg',
         // icon: {
         //   path: google.maps.SymbolPath.CIRCLE,
@@ -31,7 +31,11 @@ async function initMap(data) {
 
   map.fitBounds(bounds);
   // Add a marker clusterer to manage the markers.
-  new MarkerClusterer({ markers, map });
+  new MarkerClusterer({
+    markers,
+    map,
+    onClusterClick: ev => ev.preventDefault()
+  });
 }
 
 // http://www.geognos.com/api/en/countries/info/all.json
