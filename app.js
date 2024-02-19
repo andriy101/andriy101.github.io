@@ -33,8 +33,20 @@ const initMap = async data => {
   }
 }
 
-const updateStepsWoldwide = res => {
-  const total = res.reduce((acc, { totalSteps }) => acc + totalSteps, 0);
+const updateBoxes = res => {
+  let index = 1;
+  const total = res.reduce((acc, { countryCode, totalSteps }) => {
+    if (totalSteps) {
+      const row = document.createElement('div');
+      row.classList.add('row');
+      row.innerHTML = `
+        <div class="index">${index++}</div>
+        <div class="country">${countryCode}</div>
+        <div class="steps">${totalSteps}</div>`;
+      document.querySelector('.list .content').appendChild(row);
+    }
+    return acc + totalSteps;
+  }, 0);
   document.querySelector('.number').innerHTML = total.toLocaleString('en-US');
 };
 
@@ -58,7 +70,7 @@ fetch('https://a.primefactorgames.com/steps/get-all', {
     return [];
   })
   .then(res => {
-    updateStepsWoldwide(res);
+    updateBoxes(res);
 
     return Promise.all(
       res.filter(({ totalMarkers }) => totalMarkers).map(({ countryCode, totalMarkers }) => getMarkers(countryCode, totalMarkers))

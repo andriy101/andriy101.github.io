@@ -8,18 +8,85 @@ html, body {
   font-family: Roboto, Arial, sans-serif;
 }
 
-.steps-worldwide {
-    position: absolute;
-    top: 65px;
-    left: 10px;
+.box {
     background: rgba(255, 255, 255, .9);
     border: solid 1px lightgray;
     padding: 12px;
     border-radius: 12px;
+    .title {
+        text-align: center;
+    }
+}
+
+.steps-worldwide {
+    position: absolute;
+    top: 65px;
+    left: 10px;
+    transition: top .2s ease-in-out;
     .number {
         text-align: center;
         font-size: 1.5rem;
         font-weight: bold;
         margin-top: 10px;
     }
+}
+
+.list {
+    position: absolute;
+    bottom: 10px;
+    left: 10px;
+    .content {
+        margin-top: 10px;
+        .row {
+            display: grid;
+            gap: 5px;
+            grid-template-columns: auto auto 1fr;
+            padding-block: 5px;
+            align-items: center;
+            font-size: 0.9rem;
+            .index {
+                background: lightseagreen;
+                color: white;
+                width: 22px;
+                height: 22px;
+                display: grid;
+                place-content: center;
+                border-radius: 50%;
+            }
+            .steps {
+                text-align: right;
+            }
+        }
+    }
+}
+
+@media (height < 250px) {
+    .list {
+        .content {
+            display: flex;
+            .row {
+                margin-right: 10px;
+            }
+        }
+    }
+}
+
+@media (height < 200px) {
+    .steps-worldwide {
+        top: 10px;
+    }
+}
+
+.loader {
+    position: fixed;
+    inset: 0;
+    background: white;
+    z-index: 1;
+}
+.loader::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: url(flower.svg);
+    opacity: .1;
 }
