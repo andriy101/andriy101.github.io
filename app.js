@@ -55,8 +55,9 @@ const getMarkers = (code, totalMarkers) => fetch(`/coordinates/${code}.json`)
   })
   .then(res => res.slice(0, totalMarkers));
 
-fetch('https://b.primefactorgames.com/steps/get-all')
-  .then(res => {
+fetch('https://a.primefactorgames.com/steps/get-all', {
+	headers: { 'requested-from-browser': true }
+}).then(res => {
     if (res.ok) {
       console.log('[PERFFF] GET ALL', Date.now() - PERFFF);
       return res.json();
