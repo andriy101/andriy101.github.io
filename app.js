@@ -1,11 +1,9 @@
 import { MarkerClusterer } from 'https://cdn.skypack.dev/@googlemaps/markerclusterer@2.3.1';
-import jsonAll from './all.js';
 
-async function initMap(data) {
-  console.log('[PERFFF] init map', Date.now() - PERFFF);
+const initMap = async data => {
+  const useCluster = new URLSearchParams(location.search).has('useCluster');
   // Request needed libraries.
   const { Map } = await google.maps.importLibrary('maps');
-  console.log('[PERFFF] LOAD map', Date.now() - PERFFF);
 
   const bounds = new google.maps.LatLngBounds();
   const map = new google.maps.Map(document.getElementById('map'));
@@ -15,39 +13,34 @@ async function initMap(data) {
     const marker = new google.maps.Marker({
         position: { lat, lng },
         icon: 'flower.svg',
-        // icon: {
-        //   path: google.maps.SymbolPath.CIRCLE,
-        //   fillColor: 'red',
-        //   fillOpacity: 1,
-        //   scale: 10,
-        //   strokeWeight: 0
-        // }
+        ...(useCluster ? {} : { map })
     });
+
     bounds.extend(marker.position);
 
     return marker;
   });
-  console.log('[PERFFF] LOOP', Date.now() - PERFFF);
 
   map.fitBounds(bounds);
-  // Add a marker clusterer to manage the markers.
-  new MarkerClusterer({
-    markers,
-    map,
-    onClusterClick: ev => ev.preventDefault()
-  });
+
+  if (useCluster) {
+    // Add a marker clusterer to manage the markers.
+    new MarkerClusterer({
+      markers,
+      map,
+      onClusterClick: ev => ev.preventDefault()
+    });
+  }
 }
 
-// http://www.geognos.com/api/en/countries/info/all.json
-const capitals = Object.values(jsonAll.Results).flatMap(data => data.Capital ? {
-    lat: data.Capital.GeoPt.at(0),
-    lng: data.Capital.GeoPt.at(1)
-} : []);
+const updateStepsWoldwide = res => {
+  const total = res.reduce((acc, { totalSteps }) => acc + totalSteps, 0);
+  document.querySelector('.number').innerHTML = total.toLocaleString('en-US');
+};
 
 const getMarkers = (code, totalMarkers) => fetch(`/coordinates/${code}.json`)
   .then(res => {
     if (res.ok) {
-      console.log('[PERFFF] GET ALL', code ,Date.now() - PERFFF);
       return res.json();
     }
     console.error(`[APP] Failed to fetch markers for ${code}`);
@@ -59,14 +52,14 @@ fetch('https://a.primefactorgames.com/steps/get-all', {
 	headers: { 'requested-from-browser': true }
 }).then(res => {
     if (res.ok) {
-      console.log('[PERFFF] GET ALL', Date.now() - PERFFF);
       return res.json();
     }
     console.error('[APP] Failed to fetch GET ALL');
     return [];
   })
   .then(res => {
-    console.log('+++ RRR', res);
+    updateStepsWoldwide(res);
+
     return Promise.all(
       res.filter(({ totalMarkers }) => totalMarkers).map(({ countryCode, totalMarkers }) => getMarkers(countryCode, totalMarkers))
     );
