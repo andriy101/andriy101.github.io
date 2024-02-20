@@ -33,8 +33,9 @@ html, body {
 
 .list {
     position: absolute;
-    bottom: 10px;
+    bottom: 27px;
     left: 10px;
+    transition: all .2s ease-in-out;
     .content {
         margin-top: 10px;
         .row {
@@ -60,7 +61,7 @@ html, body {
     }
 }
 
-@media (height < 250px) {
+@media (height < 400px) {
     .list {
         .content {
             display: flex;
@@ -71,8 +72,16 @@ html, body {
     }
 }
 
+@media (height < 275px) {
+    .list {
+        left: 170px;
+        top: 65px;
+        bottom: unset;
+    }
+}
+
 @media (height < 200px) {
-    .steps-worldwide {
+    .steps-worldwide, .list {
         top: 10px;
     }
 }
