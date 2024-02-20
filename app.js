@@ -11,9 +11,11 @@ let currentBound;
 const query = window.matchMedia('(prefers-reduced-motion: reduce)');
 const prefersReducedMotion = query.matches;
 
-const initMap = async data => {
-  const useCluster = new URLSearchParams(location.search).has('useCluster');
+const searchParams = new URLSearchParams(location.search);
+const useCluster = searchParams.has('useCluster');
+const useStage = searchParams.has('useStage');
 
+const initMap = async data => {
   // Add some markers to the map.
   const markers = data.map(([lat, lng]) => {
     const marker = new google.maps.Marker({
@@ -86,7 +88,7 @@ const getMarkers = (code, totalMarkers) => fetch(`/coordinates/${code}.json`)
   });
 
 Promise.all([
-  fetch('https://a.primefactorgames.com/steps/get-all', {
+  fetch(`https://${useStage ? 'a' : 'b'}.primefactorgames.com/steps/get-all`, {
     headers: { 'requested-from-browser': true }
   }).then(res => {
     if (res.ok) {
