@@ -33,15 +33,15 @@ const initMap = async data => {
   }
 }
 
-const updateBoxes = res => {
+const updateBoxes = (res, countryNames) => {
   let index = 1;
   const total = res.reduce((acc, { countryCode, totalSteps }) => {
-    if (totalSteps) {
+    if (totalSteps && index < 6) {
       const row = document.createElement('div');
       row.classList.add('row');
       row.innerHTML = `
         <div class="index">${index++}</div>
-        <div class="country">${countryCode}</div>
+        <div class="country">${countryNames[countryCode] || countryCode}</div>
         <div class="steps">${totalSteps}</div>`;
       document.querySelector('.list .content').appendChild(row);
     }
@@ -60,17 +60,25 @@ const getMarkers = (code, totalMarkers) => fetch(`/coordinates/${code}.json`)
   })
   .then(res => res.slice(0, totalMarkers));
 
-fetch('https://a.primefactorgames.com/steps/get-all', {
-	headers: { 'requested-from-browser': true }
-}).then(res => {
+Promise.all([
+  fetch('https://a.primefactorgames.com/steps/get-all', {
+    headers: { 'requested-from-browser': true }
+  }).then(res => {
     if (res.ok) {
       return res.json();
     }
     console.error('[APP] Failed to fetch GET ALL');
     return [];
-  })
-  .then(res => {
-    updateBoxes(res);
+  }),
+  fetch('/country-names.json').then(res => {
+    if (res.ok) {
+      return res.json();
+    }
+    console.error('[APP] Failed to fetch COUNTRY NAMES');
+    return {};
+  }),
+]).then(([res, countryNames]) => {
+    updateBoxes(res, countryNames);
 
     return Promise.all(
       res.filter(({ totalMarkers }) => totalMarkers).map(({ countryCode, totalMarkers }) => getMarkers(countryCode, totalMarkers))

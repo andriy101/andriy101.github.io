@@ -43,7 +43,7 @@ html, body {
             grid-template-columns: auto auto 1fr;
             padding-block: 5px;
             align-items: center;
-            font-size: 0.9rem;
+            font-size: 0.85rem;
             .index {
                 background: lightseagreen;
                 color: white;
