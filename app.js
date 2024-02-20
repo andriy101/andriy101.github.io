@@ -42,7 +42,7 @@ const updateBoxes = (res, countryNames) => {
       row.innerHTML = `
         <div class="index">${index++}</div>
         <div class="country">${countryNames[countryCode] || countryCode}</div>
-        <div class="steps">${totalSteps}</div>`;
+        <div class="steps">${totalSteps.toLocaleString('en-US')}</div>`;
       document.querySelector('.list .content').appendChild(row);
     }
     return acc + totalSteps;
