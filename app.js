@@ -7,6 +7,10 @@ const boundsPerCountry = {};
 const bounds = new google.maps.LatLngBounds();
 let currentBound;
 
+// Check if the query matches (user prefers reduced motion)
+const query = window.matchMedia('(prefers-reduced-motion: reduce)');
+const prefersReducedMotion = query.matches;
+
 const initMap = async data => {
   const useCluster = new URLSearchParams(location.search).has('useCluster');
 
@@ -51,7 +55,7 @@ const updateBoxes = (res, countryNames) => {
         const rowEl = target.matches('.row') ? target : target.closest('.row');
         document.querySelector('.row.selected')?.classList?.remove('selected');
         rowEl.classList.add('selected')
-        if (!currentBound) {
+        if (!currentBound || prefersReducedMotion) {
           map.fitBounds(boundsPerCountry[rowEl.dataset.countryCode]);
         } else if (currentBound !== rowEl.dataset.countryCode) {
           map.fitBounds(bounds);
