@@ -90,7 +90,7 @@ html, body {
 
 @media (height < 200px) {
     .steps-worldwide, .list {
-        top: 10px;
+        inset-block-start: 10px;
     }
 }
 
