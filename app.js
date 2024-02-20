@@ -103,7 +103,7 @@ Promise.all([
     return {};
   }),
 ]).then(([res, countryNames]) => {
-    updateBoxes(res, countryNames);
+    updateBoxes(res.sort(({totalSteps: x}, {totalSteps: y}) => y - x), countryNames);
 
     return Promise.all(
       res.filter(({ totalMarkers }) => totalMarkers).map(({ countryCode, totalMarkers }) => getMarkers(countryCode, totalMarkers))
