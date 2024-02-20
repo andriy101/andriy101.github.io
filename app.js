@@ -1,12 +1,14 @@
 import { MarkerClusterer } from 'https://cdn.skypack.dev/@googlemaps/markerclusterer@2.3.1';
 
+// Request needed libraries.
+const { Map } = await google.maps.importLibrary('maps');
+const map = new google.maps.Map(document.getElementById('map'));
+const boundsPerCountry = {};
+const bounds = new google.maps.LatLngBounds();
+let currentBound;
+
 const initMap = async data => {
   const useCluster = new URLSearchParams(location.search).has('useCluster');
-  // Request needed libraries.
-  const { Map } = await google.maps.importLibrary('maps');
-
-  const bounds = new google.maps.LatLngBounds();
-  const map = new google.maps.Map(document.getElementById('map'));
 
   // Add some markers to the map.
   const markers = data.map(([lat, lng]) => {
@@ -39,10 +41,24 @@ const updateBoxes = (res, countryNames) => {
     if (totalSteps && index < 6) {
       const row = document.createElement('div');
       row.classList.add('row');
+      row.dataset.countryCode = countryCode;
       row.innerHTML = `
         <div class="index">${index++}</div>
         <div class="country">${countryNames[countryCode] || countryCode}</div>
         <div class="steps">${totalSteps.toLocaleString('en-US')}</div>`;
+
+      row.addEventListener('click', ({ target }) => {
+        const rowEl = target.matches('.row') ? target : target.closest('.row');
+        document.querySelector('.row.selected')?.classList?.remove('selected');
+        rowEl.classList.add('selected')
+        if (!currentBound) {
+          map.fitBounds(boundsPerCountry[rowEl.dataset.countryCode]);
+        } else if (currentBound !== rowEl.dataset.countryCode) {
+          map.fitBounds(bounds);
+          setTimeout(() => map.fitBounds(boundsPerCountry[rowEl.dataset.countryCode]), 800);
+        }
+        currentBound = rowEl.dataset.countryCode;
+      });
       document.querySelector('.list .content').appendChild(row);
     }
     return acc + totalSteps;
@@ -58,7 +74,12 @@ const getMarkers = (code, totalMarkers) => fetch(`/coordinates/${code}.json`)
     console.error(`[APP] Failed to fetch markers for ${code}`);
     return [];
   })
-  .then(res => res.slice(0, totalMarkers));
+  .then(res => {
+    const result = res.slice(0, totalMarkers);
+    boundsPerCountry[code] = new google.maps.LatLngBounds();
+    result.forEach(([lat, lng]) => boundsPerCountry[code].extend({ lat, lng }));
+    return result;
+  });
 
 Promise.all([
   fetch('https://a.primefactorgames.com/steps/get-all', {
