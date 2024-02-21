@@ -1,0 +1,1 @@
+cr = {key:atob('QUl6YVN5Q3pZWUg1eUx4UGVfTHl2SGRVQ2hpN0l5aFVqeUppdjdz'),v:'weekly'};
