@@ -105,5 +105,7 @@ html, body {
     position: absolute;
     inset: 0;
     background: url(flower.svg);
+    background-size: 111px;
+    background-repeat: space;
     opacity: .1;
 }
