@@ -55,6 +55,9 @@ const updateBoxes = (res, countryNames) => {
 
       row.addEventListener('click', ({ target }) => {
         const rowEl = target.matches('.row') ? target : target.closest('.row');
+        if (!boundsPerCountry[rowEl.dataset.countryCode]) {
+          return;
+        }
         document.querySelector('.row.selected')?.classList?.remove('selected');
         rowEl.classList.add('selected')
         if (!currentBound || prefersReducedMotion) {
@@ -82,8 +85,10 @@ const getMarkers = (code, totalMarkers) => fetch(`/coordinates/${code}.json`)
   })
   .then(res => {
     const result = res.slice(0, totalMarkers);
-    boundsPerCountry[code] = new google.maps.LatLngBounds();
-    result.forEach(([lat, lng]) => boundsPerCountry[code].extend({ lat, lng }));
+    if (result.length) {
+      boundsPerCountry[code] = new google.maps.LatLngBounds();
+      result.forEach(([lat, lng]) => boundsPerCountry[code].extend({ lat, lng }));
+    }
     return result;
   });
 
