@@ -75,7 +75,7 @@ const updateBoxes = (res, countryNames) => {
   document.querySelector('.number').innerHTML = total.toLocaleString('en-US');
 };
 
-const getMarkers = (code, totalMarkers) => fetch(`/coordinates/${code}.json`)
+const getMarkers = (code, totalMarkers) => fetch(`/locations/${code}.json`)
   .then(res => {
     if (res.ok) {
       return res.json();
