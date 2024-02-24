@@ -89,6 +89,7 @@ html, body {
 
 @media (height < 400px) {
     .list {
+        padding-bottom: 2px;
         .content {
             display: flex;
             .row {
