@@ -52,7 +52,7 @@ html, body {
     .content {
         margin-top: 10px;
         max-height: 160px;
-        max-width: calc(100vw - 48px);
+        max-width: calc(100vw - 100px);
         overflow: auto;
         .row {
             display: grid;
@@ -105,6 +105,7 @@ html, body {
         bottom: unset;
         .content {
             margin-top: 6px;
+            max-width: calc(100vw - 260px);
         }
     }
 }
