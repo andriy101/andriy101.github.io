@@ -36,8 +36,24 @@ html, body {
     bottom: 27px;
     left: 10px;
     transition: all .2s ease-in-out;
+    .title {
+        position: relative;
+        text-align: left;
+        .scroll {
+            position: absolute;
+            top: 16px;
+            left: 0;
+            font-size: 10px;
+            color: lightseagreen;
+            opacity: 0;
+            transition: opacity .2s ease-in-out;
+        }
+    }
     .content {
         margin-top: 10px;
+        max-height: 160px;
+        max-width: calc(100vw - 48px);
+        overflow: auto;
         .row {
             display: grid;
             gap: 5px;
@@ -63,6 +79,11 @@ html, body {
         .row:is(:hover, .selected) {
             opacity: 1;
         }
+    }
+}
+.list:hover {
+    .title .scroll {
+        opacity: .8;
     }
 }
 

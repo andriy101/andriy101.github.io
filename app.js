@@ -44,7 +44,7 @@ const initMap = async data => {
 const updateBoxes = (res, countryNames) => {
   let index = 1;
   const total = res.reduce((acc, { countryCode, totalSteps }) => {
-    if (totalSteps && index < 6) {
+    if (totalSteps/* && index < 6 */) {
       const row = document.createElement('div');
       row.classList.add('row');
       row.dataset.countryCode = countryCode;
@@ -118,3 +118,8 @@ Promise.all([
   })
   .then(res => res.flatMap(i => i))
   .then(data => initMap(data));
+
+const seeBtn = document.querySelector('button.see-all');
+seeBtn.addEventListener('click', ({ target }) => {
+  console.log('AA');  
+});  
