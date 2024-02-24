@@ -41,7 +41,7 @@ html, body {
         text-align: left;
         .scroll {
             position: absolute;
-            top: 16px;
+            top: 17px;
             left: 0;
             font-size: 10px;
             color: lightseagreen;
