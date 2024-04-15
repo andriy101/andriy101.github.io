@@ -10,6 +10,8 @@
   </head>
   <body style="padding: 0; margin: 0;">
     <dotlottie-player
+    id="dp"
+              preserveAspectRatio="none"
               style="height: 100vh; width: 100vw;"
               background="transparent"
               speed="1"
@@ -17,4 +19,10 @@
               loop
               autoplay></dotlottie-player>
   </body>
+
+  <script>
+    dp.addEventListener('ready', () => {
+      dp.shadowRoot.querySelector('svg').setAttribute('preserveAspectRatio', 'none');
+    });
+  </script>
 </html>
