@@ -1,0 +1,33 @@
+* {
+    box-sizing: border-box;
+  }
+  
+  :root {
+    --size: 5;
+    --gap: 5px;
+    --totalGap: calc((var(--size) + 1) * var(--gap));
+  }
+  
+  body {
+    margin: 0;
+    padding: var(--gap);
+  }
+  
+  body {
+    display: grid;
+    grid-template-columns: repeat(
+      var(--size),
+      calc((100vw - var(--totalGap)) / var(--size))
+    );
+    grid-template-rows: repeat(
+      var(--size),
+      calc((100vh - var(--totalGap)) / var(--size))
+    );
+    gap: var(--gap);
+  
+    > div:nth-child(7) {
+      grid-column: 2 / 6;
+      grid-row: 2 / 6;
+    }
+  }
+  
