@@ -14,6 +14,7 @@ const prefersReducedMotion = query.matches;
 const searchParams = new URLSearchParams(location.search);
 const useCluster = searchParams.has('useCluster');
 const useStage = searchParams.has('useStage');
+const baseUrl = useStage ? 'https://darom-adom-steps-staging-aeh4chfefwfkgrf2.eastus-01.azurewebsites.net' : 'https://darom-adom-steps-dgfrgpctfrcggeb8.eastus-01.azurewebsites.net';
 
 const initMap = async data => {
   // Add some markers to the map.
@@ -93,7 +94,7 @@ const getMarkers = (code, totalMarkers) => fetch(`/locations/${code}.json`)
   });
 
 Promise.all([
-  fetch(`https://${useStage ? 'a' : 'b'}.primefactorgames.com/steps/get-all`, {
+  fetch(`${baseUrl}/steps/get-all`, {
     headers: { 'requested-from-browser': true }
   }).then(res => {
     if (res.ok) {
