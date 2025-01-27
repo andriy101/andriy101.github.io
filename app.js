@@ -118,8 +118,3 @@ Promise.all([
   })
   .then(res => res.flatMap(i => i))
   .then(data => initMap(data));
-
-const seeBtn = document.querySelector('button.see-all');
-seeBtn.addEventListener('click', ({ target }) => {
-  console.log('AA');  
-});  
