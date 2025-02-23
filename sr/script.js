@@ -1,8 +1,12 @@
 // https://www.w3.org/TR/wai-aria/states_and_properties#aria-live
 document.querySelector('button').addEventListener('click', () => {
-  document.querySelector('.cdk-visually-hidden').textContent = '';
+  const liveRegion = document.querySelector('.cdk-visually-hidden');
+  while (liveRegion.firstChild) {
+    liveRegion.removeChild(liveRegion.firstChild);
+  }
+
   setTimeout(() => {
-    document.querySelector('.cdk-visually-hidden').textContent =
-      document.querySelector('input[type=text]').value || 'Hello WORLD';
+    const message = document.createTextNode(document.querySelector('input[type=text]').value || 'Hello WORLD');
+    liveRegion.appendChild(message);
   }, 100);
 });
