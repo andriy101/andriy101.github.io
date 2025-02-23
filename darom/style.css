@@ -127,7 +127,7 @@ html, body {
     content: '';
     position: absolute;
     inset: 0;
-    background: url(flower.svg);
+    background: url(flower-red.svg);
     background-size: 111px;
     background-repeat: space;
     opacity: .1;

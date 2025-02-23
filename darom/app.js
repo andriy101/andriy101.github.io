@@ -18,10 +18,10 @@ const baseUrl = useStage ? 'https://darom-adom-steps-staging-aeh4chfefwfkgrf2.ea
 
 const initMap = async data => {
   // Add some markers to the map.
-  const markers = data.map(([lat, lng]) => {
+  const markers = data.map(([lat, lng, color]) => {
     const marker = new google.maps.Marker({
         position: { lat, lng },
-        icon: 'flower.svg',
+        icon: `flower-${color}.svg`,
         ...(useCluster ? {} : { map })
     });
 
@@ -90,8 +90,22 @@ const getMarkers = (code, totalMarkers) => fetch(`/locations/${code}.json`)
       boundsPerCountry[code] = new google.maps.LatLngBounds();
       result.forEach(([lat, lng]) => boundsPerCountry[code].extend({ lat, lng }));
     }
-    return result;
+    return randomizeByPercentage(result);
   });
+
+const randomizeByPercentage = (arr, percentage = 30) => {
+  let count = Math.floor(arr.length * (percentage / 100));
+  let indices = new Set();
+  
+  while (indices.size < count) {
+      indices.add(Math.floor(Math.random() * arr.length));
+  }
+  
+  return arr.map((item, index) => [
+    ...item,
+    indices.has(index) ? 'orange' : 'red'
+  ]);
+}
 
 Promise.all([
   fetch(`${baseUrl}/steps/get-all`, {
@@ -103,19 +117,28 @@ Promise.all([
     console.error('[APP] Failed to fetch GET ALL');
     return [];
   }),
-  fetch('/country-names.json').then(res => {
+  fetch('country-names.json').then(res => {
     if (res.ok) {
       return res.json();
     }
     console.error('[APP] Failed to fetch COUNTRY NAMES');
     return {};
   }),
-]).then(([res, countryNames]) => {
+  fetch(`${baseUrl}/steps/color`).then(res => {
+    if (res.ok) {
+      return res.json();
+    }
+    console.error('[APP] Failed to fetch STEPS COLOR');
+    return {};
+  })
+]).then(([res, countryNames, stepsColor]) => {
+    console.log('+++ STEPS COLOR =', stepsColor);
     updateBoxes(res.sort(({totalSteps: x}, {totalSteps: y}) => y - x), countryNames);
-
     return Promise.all(
       res.filter(({ totalMarkers }) => totalMarkers).map(({ countryCode, totalMarkers }) => getMarkers(countryCode, totalMarkers))
     );
   })
-  .then(res => res.flatMap(i => i))
+  .then(res => {
+    return res.flatMap(i => i);
+  })
   .then(data => initMap(data));
