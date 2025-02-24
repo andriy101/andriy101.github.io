@@ -21,7 +21,8 @@ const initMap = async data => {
   const markers = data.map(([lat, lng, color]) => {
     const marker = new google.maps.Marker({
         position: { lat, lng },
-        icon: `flower-${color}.svg`,
+        // icon: `flower-${color}.svg`,
+        icon: 'flower-red.svg',
         ...(useCluster ? {} : { map })
     });
 
