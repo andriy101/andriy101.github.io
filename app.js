@@ -132,7 +132,7 @@ Promise.all([
     return {};
   })
 ]).then(([res, countryNames, stepsColor]) => {
-    const colorPercentage = stepsColor?.precentage;
+    const colorPercentage = stepsColor?.percentage;
     updateBoxes(res.sort(({totalSteps: x}, {totalSteps: y}) => y - x), countryNames);
     return Promise.all(
       res.filter(({ totalMarkers }) => totalMarkers).map(({ countryCode, totalMarkers }) => getMarkers(countryCode, totalMarkers, colorPercentage))
