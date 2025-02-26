@@ -21,8 +21,7 @@ const initMap = async data => {
   const markers = data.map(([lat, lng, color]) => {
     const marker = new google.maps.Marker({
         position: { lat, lng },
-        // icon: `flower-${color}.svg`,
-        icon: 'flower-red.svg',
+        icon: `flower-${color || 'red'}.svg`,
         ...(useCluster ? {} : { map })
     });
 
@@ -46,7 +45,7 @@ const initMap = async data => {
 const updateBoxes = (res, countryNames) => {
   let index = 1;
   const total = res.reduce((acc, { countryCode, totalSteps }) => {
-    if (totalSteps/* && index < 6 */) {
+    if (totalSteps) {
       const row = document.createElement('div');
       row.classList.add('row');
       row.dataset.countryCode = countryCode;
@@ -77,7 +76,7 @@ const updateBoxes = (res, countryNames) => {
   document.querySelector('.number').innerHTML = total.toLocaleString('en-US');
 };
 
-const getMarkers = (code, totalMarkers) => fetch(`/locations/${code}.json`)
+const getMarkers = (code, totalMarkers, colorPercentage) => fetch(`/locations/${code}.json`)
   .then(res => {
     if (res.ok) {
       return res.json();
@@ -91,11 +90,11 @@ const getMarkers = (code, totalMarkers) => fetch(`/locations/${code}.json`)
       boundsPerCountry[code] = new google.maps.LatLngBounds();
       result.forEach(([lat, lng]) => boundsPerCountry[code].extend({ lat, lng }));
     }
-    return randomizeByPercentage(result);
+    return colorPercentage ? randomizeByPercentage(result, colorPercentage) : result;
   });
 
-const randomizeByPercentage = (arr, percentage = 30) => {
-  let count = Math.floor(arr.length * (percentage / 100));
+const randomizeByPercentage = (arr, percentage) => {
+  let count = Math.floor(arr.length * percentage);
   let indices = new Set();
   
   while (indices.size < count) {
@@ -133,10 +132,10 @@ Promise.all([
     return {};
   })
 ]).then(([res, countryNames, stepsColor]) => {
-    console.log('+++ STEPS COLOR =', stepsColor);
+    const colorPercentage = stepsColor?.precentage;
     updateBoxes(res.sort(({totalSteps: x}, {totalSteps: y}) => y - x), countryNames);
     return Promise.all(
-      res.filter(({ totalMarkers }) => totalMarkers).map(({ countryCode, totalMarkers }) => getMarkers(countryCode, totalMarkers))
+      res.filter(({ totalMarkers }) => totalMarkers).map(({ countryCode, totalMarkers }) => getMarkers(countryCode, totalMarkers, colorPercentage))
     );
   })
   .then(res => {
