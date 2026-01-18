@@ -138,3 +138,15 @@ zoomPlus.addEventListener('click', () => {
 zoomReset.addEventListener('click', () => {
     updateZoom(100);
 });
+
+// Remove circle and tooltip on window resize
+window.addEventListener('resize', () => {
+    if (circle) {
+        circle.style.display = 'none';
+        tooltip.hidePopover();
+        if (tooltipArrow) {
+            tooltipArrow.style.display = 'none';
+        }
+    }
+    activeBar = null;
+});
