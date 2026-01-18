@@ -105,6 +105,9 @@ function updateZoom(value) {
     zoomValue.textContent = `${value}%`;
     zoomSlider.value = value;
     
+    // Position value above slider thumb
+    updateValuePosition(value);
+    
     // Update circle position if it exists and is visible
     if (circle && circle.style.display === 'block') {
         const circleLeft = parseFloat(circle.style.left);
@@ -119,6 +122,17 @@ function updateZoom(value) {
     }
     
     currentScale = newScale;
+}
+
+function updateValuePosition(value) {
+    const min = parseFloat(zoomSlider.min);
+    const max = parseFloat(zoomSlider.max);
+    const percent = (value - min) / (max - min);
+    const sliderWidth = zoomSlider.offsetWidth;
+    const thumbWidth = 16; // Approximate thumb width
+    // Calculate position accounting for thumb width so value is centered above thumb
+    const position = percent * (sliderWidth - thumbWidth) + (thumbWidth / 2);
+    zoomValue.style.left = `${position}px`;
 }
 
 zoomSlider.addEventListener('input', (event) => {
@@ -149,4 +163,13 @@ window.addEventListener('resize', () => {
         }
     }
     activeBar = null;
+    updateValuePosition(zoomSlider.value);
 });
+
+// Initialize value position on load
+window.addEventListener('load', () => {
+    updateValuePosition(100);
+});
+
+// Also initialize immediately
+updateValuePosition(100);

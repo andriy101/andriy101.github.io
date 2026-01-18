@@ -109,16 +109,44 @@ body {
     left: 50%;
     transform: translateX(-50%);
     display: flex;
+    flex-wrap: wrap;
     align-items: center;
-    gap: 10px;
+    justify-content: center;
+    gap: 15px;
     padding: 10px 20px;
     background-color: white;
     border-radius: 8px;
     box-shadow: 0px 2px 8px rgba(0,0,0,0.2);
+    max-width: 90%;
 }
 
-.zoom-control label {
+.slider-container {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 5px;
+    padding-top: 25px;
+}
+
+.slider-container input[type="range"] {
+    width: 200px;
+}
+
+.slider-container span {
+    position: absolute;
+    top: 0;
     font-weight: bold;
+    font-size: 14px;
+    transform: translateX(-50%);
+    transition: left 0.1s ease-out;
+    white-space: nowrap;
+}
+
+.button-group {
+    display: flex;
+    gap: 8px;
+    align-items: center;
 }
 
 .zoom-control button {
@@ -149,12 +177,14 @@ body {
     background-color: #d0d0d0;
 }
 
-.zoom-control input[type="range"] {
-    width: 200px;
-}
-
-.zoom-control span {
-    min-width: 50px;
-    text-align: right;
-    font-weight: bold;
+/* Responsive: buttons wrap to second row when not enough space */
+@media (max-width: 450px) {
+    .zoom-control {
+        gap: 10px;
+    }
+    
+    .button-group {
+        width: 100%;
+        justify-content: center;
+    }
 }

@@ -22,12 +22,15 @@
     </div>
 
     <div class="zoom-control">
-        <label for="zoom-slider">Zoom:</label>
-        <button id="zoom-minus">-</button>
-        <input type="range" id="zoom-slider" min="50" max="200" value="100" step="10">
-        <button id="zoom-plus">+</button>
-        <span id="zoom-value">100%</span>
-        <button id="zoom-reset">Reset</button>
+        <div class="slider-container">
+            <span id="zoom-value">100%</span>
+            <input type="range" id="zoom-slider" min="50" max="200" value="100" step="10">
+        </div>
+        <div class="button-group">
+            <button id="zoom-minus">-</button>
+            <button id="zoom-plus">+</button>
+            <button id="zoom-reset">Reset</button>
+        </div>
     </div>
 
     <script src="script.js"></script>
