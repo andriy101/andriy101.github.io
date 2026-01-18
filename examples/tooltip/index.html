@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bar Chart</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="chart">
+        <div class="bar" style="width: 40%; background-color: #f44336;" title="Bar chart data"></div>
+        <div class="bar" style="width: 70%; background-color: #2196F3;" title="Bar chart data"></div>
+        <div class="bar" style="width: 25%; background-color: #ffeb3b;" title="Bar chart data"></div>
+        <div class="bar" style="width: 100%; background-color: #9c27b0;" title="Bar chart data"></div>
+        <div class="bar" style="width: 55%; background-color: #e91e63;" title="Bar chart data"></div>
+    </div>
+
+    <div id="tooltip" popover="manual">
+        <p>This is a data point marker.</p>
+        <p>Drag it along the bar to reposition.</p>
+        <p>Click outside to hide the marker.</p>
+    </div>
+
+    <div class="zoom-control">
+        <label for="zoom-slider">Zoom:</label>
+        <button id="zoom-minus">-</button>
+        <input type="range" id="zoom-slider" min="50" max="200" value="100" step="10">
+        <button id="zoom-plus">+</button>
+        <span id="zoom-value">100%</span>
+        <button id="zoom-reset">Reset</button>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
